@@ -2,16 +2,20 @@
   <main>
       <div class="container">
           <div class="row cards">
-              <div 
-                class="col-2 m-2 card"
+              <Card
+                
                 v-for="(card,index) in cards"
                 :key="index"
-              >
-                  <img :src="card.poster" alt="">
+                :image="card.poster"
+                :title="card.title"
+                :artist="card.author"
+                :years="card.year"
+              />
+                  <!-- <img :src="card.poster" alt="">
                   <h1 class="title">{{ card.title }}</h1>
                   <h5 class="artist">{{ card.author }}</h5>
-                  <h5 class="age-song">{{ card.year}}</h5>
-              </div>
+                  <h5 class="age-song">{{ card.year}}</h5> -->
+            
               
           </div>
       </div>
@@ -20,8 +24,12 @@
 
 <script>
 import axios from 'axios';
+import Card from './Card.vue';
 export default {
     name: 'Main',
+    components: {
+        Card,
+    },
     data(){
         return{
             cards: [],
@@ -44,6 +52,7 @@ export default {
 
 <style lang="scss">
     main{
+        margin-top: 3em;
         .cards{
             width: 100%;
             height: 70%;
