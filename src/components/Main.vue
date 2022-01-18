@@ -1,22 +1,37 @@
 <template>
   <main>
       <div class="container">
-          <div class="row cards">
-              <Card
-                
-                v-for="(card,index) in cards"
-                :key="index"
+          <div class="row d-flex justify-content-center">
+              <div class="col-3">
+                  <h3 class="gender-title">Seleziona genere:</h3>
+              </div>
+              <div class="col-2 d-flex align-items-center">
+                <select 
+                    class="gender-select"
+                    name="gender" id="gender"
+                    v-model="genderSelection"
+                    @change="filterGender1"
+                >
+
+                    <option value="all">All</option>
+                    <option value="rock">Rock</option>
+                    <option value="pop">Pop</option>
+                    <option value="jazz">Jazz</option>
+                    <option value="metal">Metal</option>
+
+                </select>
+
+              </div>
+          </div>
+          <div class="row cards d-flex justify-content-center">
+            <Card                
+                v-for="(card,index) in filterGender"
+                :key="index + 'A'"
                 :image="card.poster"
                 :title="card.title"
                 :artist="card.author"
-                :years="card.year"
-              />
-                  <!-- <img :src="card.poster" alt="">
-                  <h1 class="title">{{ card.title }}</h1>
-                  <h5 class="artist">{{ card.author }}</h5>
-                  <h5 class="age-song">{{ card.year}}</h5> -->
-            
-              
+                years="card.year"
+            />   
           </div>
       </div>
   </main>
@@ -33,6 +48,8 @@ export default {
     data(){
         return{
             cards: [],
+            filterGender: null,
+            genderSelection: 'all',
         }
     },
     mounted() {
@@ -41,10 +58,23 @@ export default {
         .then((result) => {
           console.log(result.data.response);
           this.cards = result.data.response;
+          this.filterGender = this.cards
         })
         .catch((error) => {
           console.log(error);
         });
+    },
+    methods:{
+        filterGender1() {
+            this.filterGender = this.cards;
+
+            if(this.genderSelection !== 'all'){
+                this.filterGender = this.filterGender.filter(album => album.genre.toLowerCase() === this.genderSelection);
+            }else{
+                return this.filterGender;
+            }
+            return this.filterGender;
+        },
     }
 }
 
@@ -71,5 +101,12 @@ export default {
                 }
             }
         }
+    }
+    .gender-select{
+        width: 100%;
+        height: 80%;
+    }
+    .gender-title{
+        color: white;
     }
 </style>
